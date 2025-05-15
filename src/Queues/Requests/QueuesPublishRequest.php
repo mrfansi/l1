@@ -16,7 +16,7 @@ class QueuesPublishRequest extends CloudflareRequest implements HasBody
     public function __construct(
         $connector,
         protected string $queueName,
-        protected mixed $body,
+        protected mixed $messageBody,
         protected array $options = [],
     ) {
         parent::__construct($connector);
@@ -34,7 +34,7 @@ class QueuesPublishRequest extends CloudflareRequest implements HasBody
     protected function defaultBody(): array
     {
         $message = [
-            'body' => $this->body,
+            'body' => $this->messageBody,
         ];
 
         if (!empty($this->options)) {

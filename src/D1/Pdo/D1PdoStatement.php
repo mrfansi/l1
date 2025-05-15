@@ -25,11 +25,11 @@ class D1PdoStatement extends PDOStatement
      * Set the fetch mode for this statement.
      *
      * @param int $mode The fetch mode must be one of the PDO::FETCH_* constants.
-     * @param string|object|null $classNameObject The class name or object to fetch.
-     * @param array|null $constructorArgs Constructor arguments for the class.
+     * @param mixed $class The class name or object to fetch.
+     * @param mixed $constructorArgs Constructor arguments for the class.
      * @return bool Returns TRUE on success or FALSE on failure.
      */
-    public function setFetchMode($mode = PDO::FETCH_CLASS, $classNameObject = null, $constructorArgs = null): bool
+    public function setFetchMode($mode = PDO::FETCH_CLASS, $class = null, $constructorArgs = null)
     {
         $this->fetchMode = $mode;
 
@@ -79,12 +79,12 @@ class D1PdoStatement extends PDOStatement
     /**
      * Fetches all rows from a result set.
      *
-     * @param int $mode The fetch mode must be one of the PDO::FETCH_* constants.
-     * @param string|object|null $class The class name or object to fetch.
-     * @param array|null $constructorArgs Constructor arguments for the class.
+     * @param mixed $mode The fetch mode must be one of the PDO::FETCH_* constants.
+     * @param mixed $class The class name or object to fetch.
+     * @param mixed $constructorArgs Constructor arguments for the class.
      * @return array Returns an array containing all of the result set rows.
      */
-    public function fetchAll($mode = PDO::FETCH_CLASS, $class = null, $constructorArgs = null): array
+    public function fetchAll($mode = PDO::FETCH_CLASS, $class = null, $constructorArgs = null)
     {
         // Use the provided mode or fall back to the previously set fetch mode
         $fetchMode = ($mode !== PDO::FETCH_DEFAULT) ? $mode : $this->fetchMode;

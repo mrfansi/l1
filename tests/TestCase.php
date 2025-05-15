@@ -2,6 +2,7 @@
 
 namespace Mrfansi\L1\Test;
 
+use Mockery;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -13,9 +14,33 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations(['--database' => 'd1']);
+        // Skip migrations for KV and Queues tests
+        if (!$this->isKVOrQueuesTest()) {
+            $this->loadLaravelMigrations(['--database' => 'd1']);
+        }
 
         $this->withFactories(__DIR__.'/database/factories');
+    }
+
+    /**
+     * Determine if the current test is a KV or Queues test.
+     *
+     * @return bool
+     */
+    protected function isKVOrQueuesTest(): bool
+    {
+        $testClass = get_class($this);
+        return $testClass === 'Mrfansi\L1\Test\KVTest' || $testClass === 'Mrfansi\L1\Test\QueuesTest';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        Mockery::close();
+
+        parent::tearDown();
     }
 
     /**
@@ -45,6 +70,18 @@ abstract class TestCase extends Orchestra
                 'token' => env('CLOUDFLARE_TOKEN', getenv('CLOUDFLARE_TOKEN')),
                 'account_id' => env('CLOUDFLARE_ACCOUNT_ID', getenv('CLOUDFLARE_ACCOUNT_ID')),
             ],
+        ]);
+
+        // Configure cache for KV tests
+        $app['config']->set('cache.stores.kv', [
+            'driver' => 'kv',
+            'prefix' => 'test_',
+        ]);
+
+        // Configure queue for Queues tests
+        $app['config']->set('queue.connections.cloudflare', [
+            'driver' => 'cloudflare',
+            'queue' => 'test-queue',
         ]);
     }
 }
