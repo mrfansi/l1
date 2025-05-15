@@ -6,3 +6,4 @@ database.sqlite
 /memory-bank
 tests/worker/pnpm-lock.yaml
 .env.testing
+.phpunit.result.cache

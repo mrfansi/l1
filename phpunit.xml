@@ -3,7 +3,6 @@
     <testsuites>
         <testsuite name="Mrfansi Test Suite">
             <directory>tests</directory>
-            <exclude>tests/D1Test.php</exclude>
         </testsuite>
     </testsuites>
     <filter>
@@ -13,7 +12,9 @@
     </filter>
     <php>
         <server name="APP_ENV" value="testing" />
-        <server name="CLOUDFLARE_TOKEN" value="test" />
-        <server name="CLOUDFLARE_ACCOUNT_ID" value="1234" />
+        <env name="CLOUDFLARE_TOKEN" value="test-token"/>
+        <env name="CLOUDFLARE_ACCOUNT_ID" value="test-account-id"/>
+        <env name="CLOUDFLARE_KV_NAMESPACE" value="test-namespace"/>
+        <env name="CLOUDFLARE_QUEUE_NAME" value="test-queue"/>
     </php>
 </phpunit>
