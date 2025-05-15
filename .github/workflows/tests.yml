@@ -1,0 +1,114 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1, 8.2, 8.3, 8.4]
+        laravel: [10.*, 11.*, 12.*]
+        exclude:
+          # Laravel 10 requires PHP 8.1 - 8.2
+          - php: 8.3
+            laravel: 10.*
+          - php: 8.4
+            laravel: 10.*
+          # Laravel 11 requires PHP 8.2 - 8.3
+          - php: 8.1
+            laravel: 11.*
+          - php: 8.4
+            laravel: 11.*
+          # Laravel 12 requires PHP 8.2 - 8.4
+          - php: 8.1
+            laravel: 12.*
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "illuminate/cache:${{ matrix.laravel }}" "illuminate/database:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Start test worker
+        run: |
+          cd tests/worker
+          npm ci
+          npm run start &
+          sleep 5
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
+
+  coverage:
+    runs-on: ubuntu-latest
+    name: Test Coverage
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Start test worker
+        run: |
+          cd tests/worker
+          npm ci
+          npm run start &
+          sleep 5
+
+      - name: Execute tests
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    name: Static Analysis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, libxml, mbstring, zip
+          coverage: none
+          tools: phpstan
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Execute static analysis
+        run: phpstan analyse --level=5 src/

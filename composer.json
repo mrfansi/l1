@@ -51,6 +51,7 @@
         "test": "vendor/bin/phpunit"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.40",
         "laravel/legacy-factories": "^1.3",
         "mockery/mockery": "^1.5",
         "orchestra/testbench": "^8.3|^9.0|^10.0",

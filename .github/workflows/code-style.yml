@@ -1,0 +1,46 @@
+name: Code Style
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    name: PHP CS Fixer
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, libxml, mbstring, zip
+          coverage: none
+          tools: php-cs-fixer
+
+      - name: Check code style
+        run: php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php
+
+  phpcs:
+    runs-on: ubuntu-latest
+    name: PHP CodeSniffer
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, libxml, mbstring, zip
+          coverage: none
+          tools: phpcs
+
+      - name: Check coding standards
+        run: phpcs --standard=PSR12 src/
