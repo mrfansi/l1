@@ -1,6 +1,6 @@
 <?php
 
-namespace RenokiCo\L1\D1\Pdo;
+namespace Mrfansi\L1\D1\Pdo;
 
 use Illuminate\Support\Arr;
 use PDO;
@@ -88,7 +88,7 @@ class D1PdoStatement extends PDOStatement
     {
         // Use the provided mode or fall back to the previously set fetch mode
         $fetchMode = ($mode !== PDO::FETCH_DEFAULT) ? $mode : $this->fetchMode;
-        
+
         $response = match ($fetchMode) {
             PDO::FETCH_ASSOC => $this->rowsFromResponses(),
             PDO::FETCH_OBJ => collect($this->rowsFromResponses())->map(function ($row) {
@@ -118,7 +118,7 @@ class D1PdoStatement extends PDOStatement
             ->collapse()
             ->toArray();
     }
-    
+
     /**
      * Fetch results as a specific class.
      *
@@ -131,20 +131,20 @@ class D1PdoStatement extends PDOStatement
         if (!$class) {
             throw new PDOException('Class name must be provided for FETCH_CLASS mode');
         }
-        
+
         return collect($this->rowsFromResponses())->map(function ($row) use ($class, $constructorArgs) {
             // If $class is an object, use its class
             $className = is_object($class) ? get_class($class) : $class;
-            
+
             if ($constructorArgs) {
                 return new $className(...$constructorArgs, ...$row);
             }
-            
+
             $instance = new $className();
             foreach ($row as $key => $value) {
                 $instance->$key = $value;
             }
-            
+
             return $instance;
         })->toArray();
     }

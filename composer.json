@@ -39,12 +39,12 @@
     },
     "autoload": {
         "psr-4": {
-            "RenokiCo\\L1\\": "src/"
+            "Mrfansi\\L1\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RenokiCo\\L1\\Test\\": "tests"
+            "Mrfansi\\L1\\Test\\": "tests"
         }
     },
     "scripts": {
@@ -63,7 +63,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RenokiCo\\L1\\L1ServiceProvider"
+                "Mrfansi\\L1\\L1ServiceProvider"
             ]
         }
     }

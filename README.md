@@ -31,9 +31,9 @@ composer require renoki-co/l1
 Though D1 is not connectable via SQL protocols, it can be used as a PDO driver via the package connector. This proxies the query and bindings to the D1's `/query` endpoint in the Cloudflare API.
 
 ```php
-use RenokiCo\L1\D1\D1Pdo;
-use RenokiCo\L1\D1\D1PdoStatement;
-use RenokiCo\L1\CloudflareD1Connector;
+use Mrfansi\L1\D1\D1Pdo;
+use Mrfansi\L1\D1\D1PdoStatement;
+use Mrfansi\L1\CloudflareD1Connector;
 
 $pdo = new D1Pdo(
     dsn: 'sqlite::memory:', // irrelevant
@@ -122,7 +122,7 @@ $value = Cache::store('cloudflare-kv')->get('key');
 Alternatively, you can use the KV connector directly:
 
 ```php
-use RenokiCo\L1\CloudflareKVConnector;
+use Mrfansi\L1\CloudflareKVConnector;
 
 $kv = new CloudflareKVConnector(
     'your-namespace-id',
@@ -169,7 +169,7 @@ CLOUDFLARE_QUEUE_NAME=your-queue-name
 You can then use the Queues connector in your application:
 
 ```php
-use RenokiCo\L1\CloudflareQueuesConnector;
+use Mrfansi\L1\CloudflareQueuesConnector;
 
 $queues = app('cloudflare.queues');
 

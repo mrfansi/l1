@@ -1,8 +1,8 @@
 <?php
 
-namespace RenokiCo\L1\KV\Requests;
+namespace Mrfansi\L1\KV\Requests;
 
-use RenokiCo\L1\CloudflareRequest;
+use Mrfansi\L1\CloudflareRequest;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Traits\Body\HasJsonBody;

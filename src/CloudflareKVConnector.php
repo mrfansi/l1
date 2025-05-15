@@ -1,6 +1,6 @@
 <?php
 
-namespace RenokiCo\L1;
+namespace Mrfansi\L1;
 
 use Saloon\Contracts\Response;
 

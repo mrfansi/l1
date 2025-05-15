@@ -1,6 +1,6 @@
 <?php
 
-namespace RenokiCo\L1\D1;
+namespace Mrfansi\L1\D1;
 
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
 use Illuminate\Support\Str;

@@ -1,8 +1,8 @@
 <?php
 
-namespace RenokiCo\L1\Queues\Requests;
+namespace Mrfansi\L1\Queues\Requests;
 
-use RenokiCo\L1\CloudflareRequest;
+use Mrfansi\L1\CloudflareRequest;
 use Saloon\Enums\Method;
 
 class QueuesGetRequest extends CloudflareRequest

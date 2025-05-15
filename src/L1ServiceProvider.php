@@ -1,10 +1,10 @@
 <?php
 
-namespace RenokiCo\L1;
+namespace Mrfansi\L1;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
-use RenokiCo\L1\D1\D1Connection;
+use Mrfansi\L1\D1\D1Connection;
 
 class L1ServiceProvider extends ServiceProvider
 {
@@ -55,7 +55,7 @@ class L1ServiceProvider extends ServiceProvider
             });
         });
     }
-    
+
     /**
      * Register the KV service.
      *
@@ -65,7 +65,7 @@ class L1ServiceProvider extends ServiceProvider
     {
         $this->app->singleton('cloudflare.kv', function ($app) {
             $config = $app['config']['cloudflare.kv'] ?? [];
-            
+
             return new CloudflareKVConnector(
                 $config['namespace'] ?? null,
                 $config['auth']['token'] ?? null,
@@ -73,7 +73,7 @@ class L1ServiceProvider extends ServiceProvider
                 $config['api'] ?? 'https://api.cloudflare.com/client/v4',
             );
         });
-        
+
         // Register KV as a cache driver
         $this->app->resolving('cache', function ($cache) {
             $cache->extend('cloudflare-kv', function ($app, $config) {
@@ -84,7 +84,7 @@ class L1ServiceProvider extends ServiceProvider
             });
         });
     }
-    
+
     /**
      * Register the Queues service.
      *
@@ -94,7 +94,7 @@ class L1ServiceProvider extends ServiceProvider
     {
         $this->app->singleton('cloudflare.queues', function ($app) {
             $config = $app['config']['cloudflare.queues'] ?? [];
-            
+
             return new CloudflareQueuesConnector(
                 $config['queue'] ?? null,
                 $config['auth']['token'] ?? null,
