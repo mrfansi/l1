@@ -1,12 +1,12 @@
 # L1 - Cloudflare bindings for Laravel
 
-![CI](https://github.com/renoki-co/l1/workflows/CI/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/renoki-co/l1/branch/master/graph/badge.svg)](https://codecov.io/gh/renoki-co/l1/branch/master)
+![CI](https://github.com/mrfansi/l1/workflows/CI/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/mrfansi/l1/branch/master/graph/badge.svg)](https://codecov.io/gh/mrfansi/l1/branch/master)
 [![StyleCI](https://github.styleci.io/repos/651202208/shield?branch=master)](https://github.styleci.io/repos/651202208)
-[![Latest Stable Version](https://poser.pugx.org/renoki-co/l1/v/stable)](https://packagist.org/packages/renoki-co/l1)
-[![Total Downloads](https://poser.pugx.org/renoki-co/l1/downloads)](https://packagist.org/packages/renoki-co/l1)
-[![Monthly Downloads](https://poser.pugx.org/renoki-co/l1/d/monthly)](https://packagist.org/packages/renoki-co/l1)
-[![License](https://poser.pugx.org/renoki-co/l1/license)](https://packagist.org/packages/renoki-co/l1)
+[![Latest Stable Version](https://poser.pugx.org/mrfansi/l1/v/stable)](https://packagist.org/packages/mrfansi/l1)
+[![Total Downloads](https://poser.pugx.org/mrfansi/l1/downloads)](https://packagist.org/packages/mrfansi/l1)
+[![Monthly Downloads](https://poser.pugx.org/mrfansi/l1/d/monthly)](https://packagist.org/packages/mrfansi/l1)
+[![License](https://poser.pugx.org/mrfansi/l1/license)](https://packagist.org/packages/mrfansi/l1)
 
 Extend your PHP/Laravel application with Cloudflare bindings.
 
@@ -21,7 +21,7 @@ This package offers support for:
 You can install the package via Composer:
 
 ```bash
-composer require renoki-co/l1
+composer require mrfansi/l1
 ```
 
 ## 🙌 Usage
