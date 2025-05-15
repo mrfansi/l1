@@ -4,3 +4,4 @@ composer.lock
 .DS_Store
 database.sqlite
 /memory-bank
+tests/worker/pnpm-lock.yaml
