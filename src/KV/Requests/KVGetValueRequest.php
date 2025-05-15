@@ -1,0 +1,29 @@
+<?php
+
+namespace RenokiCo\L1\KV\Requests;
+
+use RenokiCo\L1\CloudflareRequest;
+use Saloon\Enums\Method;
+
+class KVGetValueRequest extends CloudflareRequest
+{
+    protected Method $method = Method::GET;
+
+    public function __construct(
+        $connector,
+        protected string $namespaceId,
+        protected string $key,
+    ) {
+        parent::__construct($connector);
+    }
+
+    public function resolveEndpoint(): string
+    {
+        return sprintf(
+            '/accounts/%s/storage/kv/namespaces/%s/values/%s',
+            $this->connector->accountId,
+            $this->namespaceId,
+            $this->key,
+        );
+    }
+}

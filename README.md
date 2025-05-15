@@ -13,8 +13,8 @@ Extend your PHP/Laravel application with Cloudflare bindings.
 This package offers support for:
 
 - [x] [Cloudflare D1](https://developers.cloudflare.com/d1)
-- [ ] [Cloudflare KV](https://developers.cloudflare.com/kv/)
-- [ ] [Cloudflare Queues](https://developers.cloudflare.com/queues)
+- [x] [Cloudflare KV](https://developers.cloudflare.com/kv/)
+- [x] [Cloudflare Queues](https://developers.cloudflare.com/queues)
 
 ## 🚀 Installation
 
@@ -66,13 +66,125 @@ In your `config/database.php` file, add a new connection:
 
 Then in your `.env` file, set up your Cloudflare credentials:
 
-```
+```env
 CLOUDFLARE_TOKEN=
 CLOUDFLARE_ACCOUNT_ID=
 CLOUDFLARE_D1_DATABASE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 The `d1` driver will proxy the PDO queries to the Cloudflare D1 API to run queries.
+
+### Cloudflare KV
+
+Cloudflare KV can be used as a Laravel cache driver. First, add the following to your `config/cache.php` file:
+
+```php
+'stores' => [
+    'cloudflare-kv' => [
+        'driver' => 'cloudflare-kv',
+        'prefix' => 'laravel_cache',
+    ],
+],
+```
+
+Then, create a `config/cloudflare.php` configuration file:
+
+```php
+<?php
+
+return [
+    'kv' => [
+        'namespace' => env('CLOUDFLARE_KV_NAMESPACE', ''),
+        'auth' => [
+            'token' => env('CLOUDFLARE_TOKEN', ''),
+            'account_id' => env('CLOUDFLARE_ACCOUNT_ID', ''),
+        ],
+        'api' => env('CLOUDFLARE_API_URL', 'https://api.cloudflare.com/client/v4'),
+    ],
+];
+```
+
+Add the following to your `.env` file:
+
+```env
+CLOUDFLARE_TOKEN=
+CLOUDFLARE_ACCOUNT_ID=
+CLOUDFLARE_KV_NAMESPACE=your-namespace-id
+```
+
+You can then use the KV cache driver in your application:
+
+```php
+Cache::store('cloudflare-kv')->put('key', 'value', 60);
+$value = Cache::store('cloudflare-kv')->get('key');
+```
+
+Alternatively, you can use the KV connector directly:
+
+```php
+use RenokiCo\L1\CloudflareKVConnector;
+
+$kv = new CloudflareKVConnector(
+    'your-namespace-id',
+    'your-api-token',
+    'your-account-id'
+);
+
+// List all namespaces
+$namespaces = $kv->listNamespaces();
+
+// Get a value
+$value = $kv->getValue('key');
+
+// Put a value
+$kv->putValue('key', 'value');
+
+// Delete a key
+$kv->deleteKey('key');
+```
+
+### Cloudflare Queues
+
+To use Cloudflare Queues, add the following to your `config/cloudflare.php` configuration file:
+
+```php
+'queues' => [
+    'queue' => env('CLOUDFLARE_QUEUE_NAME', ''),
+    'auth' => [
+        'token' => env('CLOUDFLARE_TOKEN', ''),
+        'account_id' => env('CLOUDFLARE_ACCOUNT_ID', ''),
+    ],
+    'api' => env('CLOUDFLARE_API_URL', 'https://api.cloudflare.com/client/v4'),
+],
+```
+
+Add the following to your `.env` file:
+
+```env
+CLOUDFLARE_TOKEN=
+CLOUDFLARE_ACCOUNT_ID=
+CLOUDFLARE_QUEUE_NAME=your-queue-name
+```
+
+You can then use the Queues connector in your application:
+
+```php
+use RenokiCo\L1\CloudflareQueuesConnector;
+
+$queues = app('cloudflare.queues');
+
+// List all queues
+$queues = $queues->listQueues();
+
+// Publish a message
+$queues->publishMessage('your-queue-name', ['data' => 'value']);
+
+// Get messages from a queue
+$messages = $queues->getMessages('your-queue-name', 10, 30);
+
+// Acknowledge a message (delete after processing)
+$queues->acknowledgeMessage('your-queue-name', 'message-id');
+```
 
 ## 🐛 Testing
 
